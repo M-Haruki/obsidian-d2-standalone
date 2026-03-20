@@ -1,11 +1,16 @@
-import { App, Editor, MarkdownView, Modal, Notice, Plugin } from "obsidian";
+import { Notice, Plugin, MarkdownPostProcessorContext } from "obsidian";
 
 export default class D2Standalone extends Plugin {
-	async onload() {}
+  async onload() {
+    new Notice("D2 Standalone plugin loaded!");
+    this.registerMarkdownCodeBlockProcessor("d2", this.processD2CodeBlock);
+  }
 
-	onunload() {}
-
-	async loadSettings() {}
-
-	async saveSettings() {}
+  private processD2CodeBlock = async (
+    source: string,
+    el: HTMLElement,
+    _ctx: MarkdownPostProcessorContext,
+  ) => {
+    el.setText("Processing D2 code block...");
+  };
 }
