@@ -1,8 +1,7 @@
-/*
+.block-language-d2 {
+  border: 1px solid #ddd;
+}
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
-
-If your plugin does not need CSS, delete this file.
-
-*/
+.block-language-d2 .d2-loading {
+  margin: 10px;
+}
