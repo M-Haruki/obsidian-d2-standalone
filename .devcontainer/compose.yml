@@ -1,0 +1,17 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /workspace
+    volumes:
+      - ..:/workspace:cached
+      - node-modules:/workspace/node_modules
+    command: >
+      sh -c "chown -R node:node /workspace &&
+        su node -c 'sleep infinity'"
+    stdin_open: true
+    tty: true
+
+volumes:
+  node-modules:

@@ -1,11 +1,10 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
-	"version": "1.0.0",
+	"id": "obsidian-d2-standalone",
+	"name": "D2 Standalone",
+	"version": "0.0.1",
 	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "Render D2 diagrams in Obsidian without installing D2 — fully standalone, no external dependencies required. Unofficial, not affiliated with Terrastruct.",
+	"author": "M_Haruki",
+	"authorUrl": "https://github.com/M-Haruki",
 	"isDesktopOnly": false
 }
