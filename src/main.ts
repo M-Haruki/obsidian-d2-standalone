@@ -41,6 +41,7 @@ export default class D2Standalone extends Plugin {
       fs: { index: source },
       options: {
         layout: this.settings.defaultLayoutEngine,
+        sketch: this.settings.sketch,
         noXMLTag: true,
       },
     });

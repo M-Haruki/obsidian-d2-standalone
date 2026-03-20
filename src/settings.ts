@@ -3,10 +3,12 @@ import D2Standalone from "./main";
 
 export interface Settings {
   defaultLayoutEngine: "dagre" | "elk";
+  sketch: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
   defaultLayoutEngine: "dagre",
+  sketch: false,
 };
 
 export class SettingTab extends PluginSettingTab {
@@ -35,6 +37,17 @@ export class SettingTab extends PluginSettingTab {
               value as Settings["defaultLayoutEngine"];
             await this.plugin.saveSettings();
           });
+      });
+
+    new Setting(containerEl)
+      .setName("Sketch Style")
+      .setDesc("Toggle sketch style for D2 diagrams.")
+      .addToggle((toggle) => {
+        toggle.setValue(this.plugin.settings.sketch).onChange(async (value) => {
+          this.plugin.settings.sketch = value;
+          await this.plugin.saveSettings();
+          this.display();
+        });
       });
   }
 }
