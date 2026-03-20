@@ -29,22 +29,30 @@ export default class D2Standalone extends Plugin {
     el: HTMLElement,
     _ctx: MarkdownPostProcessorContext,
   ) => {
-    // show loading message
-    const loadingElement = document.createElement("p");
-    loadingElement.className = "d2-loading";
-    loadingElement.setText("Rendering D2 diagram...");
-    el.appendChild(loadingElement);
+    el.innerHTML = `<p class="d2-loading">Rendering D2 diagram...</p>`;
 
     // render D2 diagram
     const d2 = new D2();
-    const result = await d2.compile({
-      fs: { index: source },
-      options: {
-        sketch: this.settings.sketch,
-        noXMLTag: true,
-      },
-    });
-    const svg = await d2.render(result.diagram, result.renderOptions);
-    el.innerHTML = svg;
+    try {
+      const result = await d2.compile({
+        fs: { index: source },
+        options: {
+          sketch: this.settings.sketch,
+          noXMLTag: true,
+        },
+      });
+      const svg = await d2.render(result.diagram, result.renderOptions);
+      el.innerHTML = this.patchSvgTheme(svg);
+    } catch (error) {
+      el.innerHTML = `<pre class="d2-error">Error rendering D2 diagram:\n${error}</pre>`;
+      return;
+    }
   };
+
+  private patchSvgTheme(svg: string): string {
+    return svg.replace(
+      /@media screen and \(prefers-color-scheme:dark\)/g,
+      ".theme-dark",
+    );
+  }
 }

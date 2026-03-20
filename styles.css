@@ -1,7 +1,18 @@
 .block-language-d2 {
-  border: 1px solid #ddd;
+  border: var(--border-width) solid var(--background-modifier-border);
+  border-radius: var(--radius-s);
+  overflow: hidden;
 }
 
 .block-language-d2 .d2-loading {
+  margin: var(--size-4-3);
+}
+
+.block-language-d2 .d2-error {
   margin: 10px;
+  background-color: var(--background-primary);
+}
+
+.block-language-d2 svg {
+  display: block;
 }
