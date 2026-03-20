@@ -40,7 +40,6 @@ export default class D2Standalone extends Plugin {
     const result = await d2.compile({
       fs: { index: source },
       options: {
-        layout: this.settings.defaultLayoutEngine,
         sketch: this.settings.sketch,
         noXMLTag: true,
       },
