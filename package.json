@@ -25,6 +25,7 @@
 	},
 	"dependencies": {
 		"@terrastruct/d2": "^0.1.33",
-		"obsidian": "latest"
+		"obsidian": "latest",
+		"panzoom": "^9.4.3"
 	}
 }

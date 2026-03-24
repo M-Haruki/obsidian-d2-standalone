@@ -1,9 +1,11 @@
 import { Notice, Plugin, MarkdownPostProcessorContext } from "obsidian";
 import { DEFAULT_SETTINGS, Settings, SettingTab } from "./settings";
 import { D2 } from "@terrastruct/d2";
+import panzoom from "panzoom";
 
 export default class D2Standalone extends Plugin {
   settings: Settings;
+  private parser = new DOMParser();
 
   async onload() {
     new Notice("D2 Standalone plugin loaded!");
@@ -29,24 +31,71 @@ export default class D2Standalone extends Plugin {
     el: HTMLElement,
     _ctx: MarkdownPostProcessorContext,
   ) => {
-    el.innerHTML = `<p class="d2-loading">Rendering D2 diagram...</p>`;
-
+    // show loading state
+    const loadingEl = document.createElement("p");
+    loadingEl.className = "d2-loading";
+    loadingEl.textContent = "Rendering D2 diagram...";
+    el.appendChild(loadingEl);
     // render D2 diagram
     const d2 = new D2();
+    let svg: string;
     try {
       const result = await d2.compile({
         fs: { index: source },
         options: {
           sketch: this.settings.sketch,
           noXMLTag: true,
+          scale: 1, // disable built-in scaling(When svgEl.clientWidth matches el.clientWidth, the panzoom argument initialY is not applied.)
         },
       });
-      const svg = await d2.render(result.diagram, result.renderOptions);
-      el.innerHTML = this.patchSvgTheme(svg);
+      svg = await d2.render(result.diagram, result.renderOptions);
     } catch (error) {
-      el.innerHTML = `<pre class="d2-error">Error rendering D2 diagram:\n${error}</pre>`;
+      // display error message
+      const errorEl = document.createElement("pre");
+      errorEl.className = "d2-error";
+      errorEl.textContent = String(error);
+      loadingEl.remove();
+      el.appendChild(errorEl);
       return;
     }
+    // insert SVG into DOM
+    const doc = this.parser.parseFromString(
+      this.patchSvgTheme(svg),
+      "image/svg+xml",
+    );
+    const svgEl = doc.documentElement;
+    loadingEl.remove();
+    el.appendChild(svgEl);
+    // calculate initial zoom and position to fit the SVG within the container
+    const initZoomX = el.clientWidth / svgEl.clientWidth;
+    const initZoomY = el.clientHeight / svgEl.clientHeight;
+    let initialZoom = 1;
+    let initialX = 0;
+    let initialY = 0;
+    if (initZoomX < initZoomY) {
+      initialZoom = initZoomX;
+      initialY =
+        (el.clientHeight - svgEl.clientHeight * initialZoom) /
+        2 /
+        (1 - initialZoom || 1);
+    } else if (initZoomY < initZoomX) {
+      initialZoom = initZoomY;
+      initialX =
+        (el.clientWidth - svgEl.clientWidth * initialZoom) /
+        2 /
+        (1 - initialZoom || 1);
+    }
+    // initialize panzoom
+    panzoom(svgEl, {
+      zoomSpeed: 0.1,
+      pinchSpeed: 0.1,
+      smoothScroll: false,
+      bounds: true,
+      boundsPadding: 0.1,
+      initialZoom: initialZoom,
+      initialX: initialX,
+      initialY: initialY,
+    });
   };
 
   private patchSvgTheme(svg: string): string {
