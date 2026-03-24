@@ -5,7 +5,7 @@ import panzoom from "panzoom";
 
 export default class D2Standalone extends Plugin {
   settings: Settings;
-  private parser = new DOMParser();
+  private readonly parser = new DOMParser();
 
   async onload() {
     new Notice("D2 Standalone plugin loaded!");
