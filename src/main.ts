@@ -88,7 +88,7 @@ export default class D2Standalone extends Plugin {
     // initialize panzoom
     panzoom(svgEl, {
       zoomSpeed: 0.1,
-      pinchSpeed: 0.1,
+      pinchSpeed: 1,
       smoothScroll: false,
       bounds: true,
       boundsPadding: 0.1,
