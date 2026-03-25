@@ -1,31 +1,31 @@
 {
-	"name": "obsidian-d2-standalone",
-	"version": "0.0.1",
-	"description": "Render D2 diagrams in Obsidian without installing D2 — fully standalone, no external dependencies required. Unofficial, not affiliated with Terrastruct.",
-	"main": "main.js",
-	"type": "module",
-	"scripts": {
-		"dev": "node esbuild.config.mjs",
-		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
-		"version": "node version-bump.mjs && git add manifest.json versions.json",
-		"lint": "eslint ."
-	},
-	"keywords": [],
-	"license": "",
-	"devDependencies": {
-		"@eslint/js": "9.30.1",
-		"@types/node": "^16.11.6",
-		"esbuild": "0.25.5",
-		"eslint-plugin-obsidianmd": "0.1.9",
-		"globals": "14.0.0",
-		"jiti": "2.6.1",
-		"tslib": "2.4.0",
-		"typescript": "^5.8.3",
-		"typescript-eslint": "8.35.1"
-	},
-	"dependencies": {
-		"@terrastruct/d2": "^0.1.33",
-		"obsidian": "latest",
-		"panzoom": "^9.4.3"
-	}
+  "name": "obsidian-d2-standalone",
+  "version": "0.0.1",
+  "description": "Render D2 diagrams in Obsidian without installing D2 — fully standalone, cross-platform. Unofficial, not affiliated with Terrastruct.",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+    "version": "node version-bump.mjs && git add manifest.json versions.json",
+    "lint": "eslint ."
+  },
+  "keywords": [],
+  "license": "GPL-3.0-only",
+  "devDependencies": {
+    "@eslint/js": "9.30.1",
+    "@types/node": "^16.11.6",
+    "esbuild": "0.25.5",
+    "eslint-plugin-obsidianmd": "0.1.9",
+    "globals": "14.0.0",
+    "jiti": "2.6.1",
+    "tslib": "2.4.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "8.35.1"
+  },
+  "dependencies": {
+    "@terrastruct/d2": "^0.1.33",
+    "obsidian": "latest",
+    "panzoom": "^9.4.3"
+  }
 }
