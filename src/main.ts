@@ -45,6 +45,7 @@ export default class D2Standalone extends Plugin {
           sketch: this.settings.sketch,
           noXMLTag: true,
           scale: 1, // disable built-in scaling(When svgEl.clientWidth matches el.clientWidth, the panzoom argument initialY is not applied.)
+          salt: crypto.randomUUID(), // this value is used for UUID generation within the library. set it to prevent ID conflicts between different diagrams.
         },
       });
       svg = await d2.render(result.diagram, result.renderOptions);
@@ -59,7 +60,7 @@ export default class D2Standalone extends Plugin {
     }
     // insert SVG into DOM
     const doc = this.parser.parseFromString(
-      this.patchSvgTheme(this.patchSvgIds(svg)),
+      this.patchSvgTheme(svg),
       "image/svg+xml",
     );
     const svgEl = doc.documentElement;
@@ -102,52 +103,5 @@ export default class D2Standalone extends Plugin {
       /@media screen and \(prefers-color-scheme:dark\)/g,
       ".theme-dark",
     );
-  }
-
-  private patchSvgIds(svg: string): string {
-    // generate a unique prefix for this SVG to avoid ID conflicts when multiple SVGs are rendered on the same page
-    const prefix = `d2-${crypto.randomUUID()}-`;
-    const doc = this.parser.parseFromString(svg, "image/svg+xml");
-    const root = doc.documentElement;
-    // create a mapping of old IDs to new IDs and update the IDs in the SVG
-    const idMap = new Map<string, string>();
-    root.querySelectorAll("[id]").forEach((node) => {
-      const oldId = node.getAttribute("id");
-      if (!oldId) return;
-      const newId = `${prefix}${oldId}`;
-      idMap.set(oldId, newId);
-      node.setAttribute("id", newId);
-    });
-    // update references to the IDs in attributes that can contain URL references or ID references
-    const attrs = [
-      "marker-start",
-      "marker-mid",
-      "marker-end",
-      "fill",
-      "stroke",
-      "filter",
-      "clip-path",
-      "mask",
-      "href",
-      "xlink:href",
-    ];
-    root.querySelectorAll("*").forEach((node) => {
-      for (const a of attrs) {
-        const v = node.getAttribute(a);
-        if (!v) continue;
-        let next = v;
-        for (const [oldId, newId] of idMap) {
-          next = next.replace(
-            new RegExp(`url\\((['"]?)#${oldId}\\1\\)`, "g"),
-            `url(#${newId})`,
-          );
-          if ((a === "href" || a === "xlink:href") && next === `#${oldId}`)
-            next = `#${newId}`;
-        }
-        if (next !== v) node.setAttribute(a, next);
-      }
-    });
-    // return
-    return new XMLSerializer().serializeToString(root);
   }
 }
