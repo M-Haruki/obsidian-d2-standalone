@@ -1,4 +1,4 @@
-import { Notice, Plugin, MarkdownPostProcessorContext } from "obsidian";
+import { Plugin, MarkdownPostProcessorContext } from "obsidian";
 import { DEFAULT_SETTINGS, Settings, SettingTab } from "./settings";
 import { D2 } from "@terrastruct/d2";
 import panzoom from "panzoom";
@@ -8,7 +8,6 @@ export default class D2Standalone extends Plugin {
   private readonly parser = new DOMParser();
 
   async onload() {
-    new Notice("D2 Standalone plugin loaded!");
     await this.loadSettings();
     this.addSettingTab(new SettingTab(this.app, this));
     this.registerMarkdownCodeBlockProcessor("d2", this.processD2CodeBlock);
