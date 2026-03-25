@@ -46,6 +46,7 @@ export default class D2Standalone extends Plugin {
           noXMLTag: true,
           scale: 1, // disable built-in scaling(When svgEl.clientWidth matches el.clientWidth, the panzoom argument initialY is not applied.)
           salt: crypto.randomUUID(), // this value is used for UUID generation within the library. set it to prevent ID conflicts between different diagrams.
+          pad: 0,
         },
       });
       svg = await d2.render(result.diagram, result.renderOptions);
@@ -67,27 +68,22 @@ export default class D2Standalone extends Plugin {
     loadingEl.remove();
     el.appendChild(svgEl);
     // calculate initial zoom and position to fit the SVG within the container
-    const initZoomX = el.clientWidth / svgEl.clientWidth;
-    const initZoomY = el.clientHeight / svgEl.clientHeight;
-    let initialZoom = 1;
-    let initialX = 0;
-    let initialY = 0;
-    if (initZoomX < initZoomY) {
-      initialZoom = initZoomX;
-      initialY =
-        (el.clientHeight - svgEl.clientHeight * initialZoom) /
-        2 /
-        (1 - initialZoom || 1);
-    } else if (initZoomY < initZoomX) {
-      initialZoom = initZoomY;
-      initialX =
-        (el.clientWidth - svgEl.clientWidth * initialZoom) /
-        2 /
-        (1 - initialZoom || 1);
-    }
+    const initialZoom =
+      Math.min(
+        el.clientWidth / svgEl.clientWidth,
+        el.clientHeight / svgEl.clientHeight,
+      ) * 0.95; // add some padding;
+    const initialX =
+      (el.clientWidth - svgEl.clientWidth * initialZoom) /
+      2 /
+      (1 - initialZoom || 1);
+    const initialY =
+      (el.clientHeight - svgEl.clientHeight * initialZoom) /
+      2 /
+      (1 - initialZoom || 1);
     // initialize panzoom
     panzoom(svgEl, {
-      zoomSpeed: 0.1,
+      zoomSpeed: 0.2,
       pinchSpeed: 1,
       smoothScroll: false,
       bounds: true,
