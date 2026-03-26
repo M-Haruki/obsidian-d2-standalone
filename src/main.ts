@@ -72,7 +72,7 @@ export default class D2Standalone extends Plugin {
       Math.min(
         el.clientWidth / svgEl.clientWidth,
         el.clientHeight / svgEl.clientHeight,
-      ) * 0.95; // add some padding;
+      ) * this.settings.initialZoomRatio; // add some padding;
     const initialX =
       (el.clientWidth - svgEl.clientWidth * initialZoom) /
       2 /
@@ -83,7 +83,7 @@ export default class D2Standalone extends Plugin {
       (1 - initialZoom || 1);
     // initialize panzoom
     panzoom(svgEl, {
-      zoomSpeed: 0.2,
+      zoomSpeed: this.settings.mouseZoomSpeed,
       pinchSpeed: 1,
       smoothScroll: false,
       bounds: true,
