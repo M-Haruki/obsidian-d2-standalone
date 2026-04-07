@@ -29,9 +29,6 @@ export class SettingTab extends PluginSettingTab {
     containerEl.empty();
 
     new Setting(containerEl)
-      .setHeading()
-      .setDesc("Changes take effect when diagrams are re-rendered.");
-    new Setting(containerEl)
       .setName("Diagram aspect ratio")
       .setDesc(
         "Specify the aspect ratio for diagrams in width:height format. Default is 4:3.",
