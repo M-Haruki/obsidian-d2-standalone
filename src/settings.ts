@@ -29,13 +29,12 @@ export class SettingTab extends PluginSettingTab {
     containerEl.empty();
 
     new Setting(containerEl)
-      .setName("D2 Standalone Plugin Settings")
       .setHeading()
-      .setDesc("Settings will take effect upon re-rendering.");
+      .setDesc("Changes take effect when diagrams are re-rendered.");
     new Setting(containerEl)
-      .setName("Diagram Aspect Ratio")
+      .setName("Diagram aspect ratio")
       .setDesc(
-        "Specify the aspect ratio for D2 diagrams in width:height format. (Default: 4:3)",
+        "Specify the aspect ratio for diagrams in width:height format. Default is 4:3.",
       )
       .addDropdown((dropdown) =>
         dropdown
@@ -51,8 +50,8 @@ export class SettingTab extends PluginSettingTab {
           }),
       );
     new Setting(containerEl)
-      .setName("Sketch Style")
-      .setDesc("Toggle sketch style for D2 diagrams. (Default: Off)")
+      .setName("Sketch style")
+      .setDesc("Toggle sketch style for diagrams. Default is off.")
       .addToggle((toggle) => {
         toggle.setValue(this.plugin.settings.sketch).onChange(async (value) => {
           this.plugin.settings.sketch = value;
@@ -61,14 +60,14 @@ export class SettingTab extends PluginSettingTab {
         });
       });
     new Setting(containerEl)
-      .setName("Initial Zoom Ratio")
-      .setDesc("Set the initial zoom ratio for D2 diagrams. (Default: 0.95)")
+      .setName("Initial zoom ratio")
+      .setDesc("Set the initial zoom ratio for diagrams. Default is 0.95.")
       .addText((text) => {
         text
           .setPlaceholder("0.50 ~ 1.00")
           .setValue(this.plugin.settings.initialZoomRatio.toFixed(2))
           .setDisabled(true);
-        text.inputEl.style.width = "var(--size-4-12)";
+        text.inputEl.addClass("d2-setting-input-width");
       })
       .addSlider((slider) => {
         slider
@@ -81,14 +80,14 @@ export class SettingTab extends PluginSettingTab {
           });
       });
     new Setting(containerEl)
-      .setName("Mouse Zoom Speed")
-      .setDesc("Set the zoom speed when using mouse wheel. (Default: 0.2)")
+      .setName("Mouse zoom speed")
+      .setDesc("Set the zoom speed when using mouse wheel. Default is 0.2.")
       .addText((text) => {
         text
           .setPlaceholder("0.1 ~ 1.0")
           .setValue(this.plugin.settings.mouseZoomSpeed.toFixed(1))
           .setDisabled(true);
-        text.inputEl.style.width = "var(--size-4-12)";
+        text.inputEl.addClass("d2-setting-input-width");
       })
       .addSlider((slider) => {
         slider

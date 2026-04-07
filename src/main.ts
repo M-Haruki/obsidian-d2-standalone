@@ -4,7 +4,7 @@ import { D2 } from "@terrastruct/d2";
 import panzoom from "panzoom";
 
 export default class D2Standalone extends Plugin {
-  settings: Settings;
+  settings: Settings = DEFAULT_SETTINGS;
   private readonly parser = new DOMParser();
 
   async onload() {

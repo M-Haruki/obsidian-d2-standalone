@@ -37,3 +37,7 @@
 .block-language-d2 svg {
   display: block;
 }
+
+.d2-setting-input-width {
+  width: var(--size-4-12);
+}
