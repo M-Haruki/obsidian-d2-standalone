@@ -17,8 +17,8 @@ Write your D2 diagrams in markdown code blocks with the language identifier `d2`
 
 ## Configuration
 
-If you want to choose a layout engine and other options, you can use the `d2-config` variable in your markdown file.  
-For example:
+If you want to choose a layout engine and other options, add a d2-config block inside your d2 code block in the markdown file.  
+The example below shows the format.
 
 ````markdown
 ```d2

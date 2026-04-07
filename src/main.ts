@@ -1,4 +1,8 @@
-import { Plugin, MarkdownPostProcessorContext } from "obsidian";
+import {
+  Plugin,
+  MarkdownPostProcessorContext,
+  MarkdownRenderChild,
+} from "obsidian";
 import { DEFAULT_SETTINGS, Settings, SettingTab } from "./settings";
 import { D2 } from "@terrastruct/d2";
 import panzoom from "panzoom";
@@ -28,7 +32,7 @@ export default class D2Standalone extends Plugin {
   private processD2CodeBlock = async (
     source: string,
     el: HTMLElement,
-    _ctx: MarkdownPostProcessorContext,
+    ctx: MarkdownPostProcessorContext,
   ) => {
     // show loading state
     const loadingEl = document.createElement("p");
@@ -69,21 +73,35 @@ export default class D2Standalone extends Plugin {
     loadingEl.remove();
     el.appendChild(svgEl);
     // calculate initial zoom and position to fit the SVG within the container
-    const initialZoom =
-      Math.min(
-        el.clientWidth / svgEl.clientWidth,
-        el.clientHeight / svgEl.clientHeight,
-      ) * this.settings.initialZoomRatio; // add some padding;
-    const initialX =
-      (el.clientWidth - svgEl.clientWidth * initialZoom) /
-      2 /
-      (1 - initialZoom || 1);
-    const initialY =
-      (el.clientHeight - svgEl.clientHeight * initialZoom) /
-      2 /
-      (1 - initialZoom || 1);
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    let initialX, initialY, initialZoom;
+    if (
+      isFinite(svgEl.clientWidth) &&
+      isFinite(svgEl.clientHeight) &&
+      svgEl.clientWidth > 0 &&
+      svgEl.clientHeight > 0
+    ) {
+      initialZoom =
+        Math.min(
+          el.clientWidth / svgEl.clientWidth,
+          el.clientHeight / svgEl.clientHeight,
+        ) * this.settings.initialZoomRatio; // add some padding;
+      initialX =
+        (el.clientWidth - svgEl.clientWidth * initialZoom) /
+        2 /
+        (1 - initialZoom || 1);
+      initialY =
+        (el.clientHeight - svgEl.clientHeight * initialZoom) /
+        2 /
+        (1 - initialZoom || 1);
+    } else {
+      // fallback to default values when SVG dimensions are not available
+      initialZoom = this.settings.initialZoomRatio;
+      initialX = 0;
+      initialY = 0;
+    }
     // initialize panzoom
-    panzoom(svgEl, {
+    const panzoomInstance = panzoom(svgEl, {
       zoomSpeed: this.settings.mouseZoomSpeed,
       pinchSpeed: 1,
       smoothScroll: false,
@@ -93,6 +111,14 @@ export default class D2Standalone extends Plugin {
       initialX: initialX,
       initialY: initialY,
     });
+    // dispose panzoom instance when the component is unloaded
+    class D2MarkdownRenderChild extends MarkdownRenderChild {
+      public unload() {
+        panzoomInstance.dispose();
+        super.unload();
+      }
+    }
+    ctx.addChild(new D2MarkdownRenderChild(el));
   };
 
   private patchSvgTheme(svg: string): string {

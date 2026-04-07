@@ -56,7 +56,6 @@ export class SettingTab extends PluginSettingTab {
         toggle.setValue(this.plugin.settings.sketch).onChange(async (value) => {
           this.plugin.settings.sketch = value;
           await this.plugin.saveSettings();
-          this.display();
         });
       });
     new Setting(containerEl)
