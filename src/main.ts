@@ -65,6 +65,7 @@ export default class D2Standalone extends Plugin {
       "image/svg+xml",
     );
     const svgEl = doc.documentElement;
+    svgEl.classList.add(this.settings.aspectRatio);
     loadingEl.remove();
     el.appendChild(svgEl);
     // calculate initial zoom and position to fit the SVG within the container

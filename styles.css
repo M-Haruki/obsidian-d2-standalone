@@ -5,8 +5,23 @@
 }
 
 .block-language-d2:has(svg) {
-  aspect-ratio: 4 / 3;
   cursor: pointer;
+}
+
+.block-language-d2:has(svg.ratio16-9) {
+  aspect-ratio: 16 / 9;
+}
+.block-language-d2:has(svg.ratio4-3) {
+  aspect-ratio: 4 / 3;
+}
+.block-language-d2:has(svg.ratio1-1) {
+  aspect-ratio: 1 / 1;
+}
+.block-language-d2:has(svg.ratio3-4) {
+  aspect-ratio: 3 / 4;
+}
+.block-language-d2:has(svg.ratio9-16) {
+  aspect-ratio: 9 / 16;
 }
 
 .block-language-d2:has(svg):active {
