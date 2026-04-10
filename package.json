@@ -1,7 +1,7 @@
 {
   "name": "d2-standalone",
-  "version": "1.0.1",
-  "description": "Render D2 diagrams in Obsidian without installing D2 — fully standalone, cross-platform. Unofficial, not affiliated with Terrastruct.",
+  "version": "1.0.2",
+  "description": "Render D2 diagrams without installing D2 — fully standalone and cross-platform. Unofficial, not affiliated with Terrastruct.",
   "main": "main.js",
   "type": "module",
   "scripts": {
