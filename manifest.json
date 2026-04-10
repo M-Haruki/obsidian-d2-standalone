@@ -1,7 +1,7 @@
 {
-  "id": "obsidian-d2-standalone",
+  "id": "d2-standalone",
   "name": "D2 Standalone",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "minAppVersion": "0.15.0",
   "description": "Render D2 diagrams in Obsidian without installing D2 — fully standalone, cross-platform. Unofficial, not affiliated with Terrastruct.",
   "author": "M_Haruki",
