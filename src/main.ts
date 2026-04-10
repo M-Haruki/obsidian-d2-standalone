@@ -86,6 +86,7 @@ export default class D2Standalone extends Plugin {
           el.clientWidth / svgEl.clientWidth,
           el.clientHeight / svgEl.clientHeight,
         ) * this.settings.initialZoomRatio; // add some padding;
+      // panzoom treats initialX/initialY as zoom anchor coordinates (not final offsets), so we divide by (1 - initialZoom) to get centered screen offsets after zoom.
       initialX =
         (el.clientWidth - svgEl.clientWidth * initialZoom) /
         2 /
