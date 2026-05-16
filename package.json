@@ -1,5 +1,5 @@
 {
-  "name": "dtwo-standalone",
+  "name": "d2-standalone",
   "version": "1.0.3",
   "description": "Render D2 diagrams without installing D2 — fully standalone and cross-platform. Unofficial, not affiliated with Terrastruct.",
   "main": "main.js",
